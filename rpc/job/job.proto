@@ -1,0 +1,15 @@
+syntax = "proto3";
+option go_package = "./rpc/job";
+package job;
+
+service JobService {
+    rpc CompressImage(CompressImageReq) returns (CompressImageResp);
+}
+
+message CompressImageReq {
+    bytes data = 1;
+}
+
+message CompressImageResp {  
+    string jobId = 1;
+}

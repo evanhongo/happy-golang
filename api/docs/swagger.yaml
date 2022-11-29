@@ -1,0 +1,68 @@
+definitions:
+  api.HttpErrorBody:
+    properties:
+      message:
+        example: status bad request
+        type: string
+    type: object
+  entity.Job:
+    properties:
+      error:
+        type: string
+      id:
+        example: e6e07f18-cae7-4ea9-a4ba-2c8ac364ea5b
+        type: string
+      name:
+        example: compressImage
+        type: string
+      result: {}
+      state:
+        example: SUCCESS
+        type: string
+    type: object
+info:
+  contact:
+    email: evan@example.com
+  description: Swagger API.
+  title: Go Service Demo
+  version: "1.0"
+paths:
+  /ping:
+    get:
+      description: ping for test service alive or not
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: ping
+  /state/{jobId}:
+    get:
+      description: get job id, name, state, result, error
+      parameters:
+      - description: job id
+        in: path
+        name: jobId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Job'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.HttpErrorBody'
+      summary: get state of job
+      tags:
+      - Job
+swagger: "2.0"
