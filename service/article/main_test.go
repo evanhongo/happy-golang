@@ -14,17 +14,15 @@ import (
 
 var _ = Describe("ArticleService", func() {
 	var (
-		ctl       *gomock.Controller
-		mockRepo  *mock.MockIArticleRepo
-		mockCache *mock.MockICache
-		service   articleService.IArticleService
+		ctl      *gomock.Controller
+		mockRepo *mock.MockIArticleRepo
+		service  articleService.IArticleService
 	)
 
 	BeforeEach(func() {
 		ctl = gomock.NewController(GinkgoT())
 		mockRepo = mock.NewMockIArticleRepo(ctl)
-		mockCache = mock.NewMockICache(ctl)
-		service = articleService.NewArticleService(mockRepo, mockCache)
+		service = articleService.NewArticleService(mockRepo)
 	})
 
 	It("should get all articles", func(ctx SpecContext) {

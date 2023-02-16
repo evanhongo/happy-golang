@@ -2,13 +2,11 @@ package service
 
 import (
 	"github.com/evanhongo/happy-golang/entity"
-	"github.com/evanhongo/happy-golang/internal/cache"
 	repository "github.com/evanhongo/happy-golang/repository/article"
 )
 
 type ArticleService struct {
-	repo  repository.IArticleRepo
-	cache cache.ICache
+	repo repository.IArticleRepo
 }
 
 func (service *ArticleService) GetAllArticles() (res []entity.Article, err error) {
@@ -20,9 +18,8 @@ func (service *ArticleService) GetAllArticles() (res []entity.Article, err error
 	return
 }
 
-func NewArticleService(repo repository.IArticleRepo, cache cache.ICache) IArticleService {
+func NewArticleService(repo repository.IArticleRepo) IArticleService {
 	return &ArticleService{
 		repo,
-		cache,
 	}
 }

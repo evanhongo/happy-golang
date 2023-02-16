@@ -44,18 +44,21 @@ go mod download
 # Upgrade dependency and all its dependencies to the latest version
 go get -u <dependencies>
 
-## Install testing tools
+# Add any missing modules necessary to build  the current module's packages and dependencies, and remove unused modules
+go mod tidy
+
+# Install testing tools
 go install github.com/golang/mock/mockgen
 go install github.com/onsi/ginkgo/v2/ginkgo
 
-## Generate files for testing purpose
+# Generate files for testing purpose
 ginkgo bootstrap
 ginkgo generate
 
-## Install swagger cli
+# Install swagger cli
 go install github.com/swaggo/swag/cmd/swag
 
-## Install protobuf cli and related tools
+# Install protobuf cli and related tools
 sudo apt update && apt install protobuf-compiler
 go install google.golang.org/protobuf
 go install github.com/twitchtv/twirp/protoc-gen-twirp
@@ -65,9 +68,6 @@ go install github.com/google/wire/cmd/wire
 
 # Generate wire_gen.go file
 go run github.com/google/wire/cmd/wire
-
-# Add any missing modules necessary to build  the current module's packages and dependencies, and remove unused modules
-go mod tidy
 ```
 
 ---

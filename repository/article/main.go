@@ -2,11 +2,13 @@ package repository
 
 import (
 	"github.com/evanhongo/happy-golang/entity"
+	"github.com/evanhongo/happy-golang/internal/cache"
 	"github.com/jinzhu/gorm"
 )
 
 type ArticleRepo struct {
-	db *gorm.DB
+	db    *gorm.DB
+	cache cache.ICache
 }
 
 func (repo *ArticleRepo) GetAllArticles() (res []entity.Article, err error) {
@@ -15,8 +17,9 @@ func (repo *ArticleRepo) GetAllArticles() (res []entity.Article, err error) {
 	return
 }
 
-func NewArticleRepo(db *gorm.DB) IArticleRepo {
+func NewArticleRepo(db *gorm.DB, cache cache.ICache) IArticleRepo {
 	return &ArticleRepo{
 		db,
+		cache,
 	}
 }

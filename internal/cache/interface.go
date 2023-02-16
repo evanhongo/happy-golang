@@ -5,8 +5,6 @@ import (
 	"time"
 )
 
-//go:generate mockgen -source interface.go -destination ../../mock/mock_cache.go -package mock
-
 type ICache interface {
 	Ping() error
 	Get(ctx context.Context, key string)
