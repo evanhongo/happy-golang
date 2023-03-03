@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/evanhongo/happy-golang/api/util"
-	job_queue "github.com/evanhongo/happy-golang/internal/job-queue"
+	job_queue "github.com/evanhongo/happy-golang/internal/job_queue"
 	"github.com/evanhongo/happy-golang/pkg/logger"
 	pb "github.com/evanhongo/happy-golang/rpc/job"
 	"github.com/gin-gonic/gin"

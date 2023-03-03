@@ -14,7 +14,6 @@ func (l *DebugLogger) Print(args ...interface{}) {
 
 // Printf ...
 func (l *DebugLogger) Printf(s string, args ...interface{}) {
-
 	logger.Debugf(s, args...)
 }
 
@@ -105,18 +104,18 @@ type WarningLogger struct {
 }
 
 func (l *WarningLogger) Print(args ...interface{}) {
-	logger.Warning(args...)
+	logger.Warn(args...)
 }
 
 // Printf ...
 func (l *WarningLogger) Printf(s string, args ...interface{}) {
 
-	logger.Warningf(s, args...)
+	logger.Warnf(s, args...)
 }
 
 // Println ...
 func (l *WarningLogger) Println(args ...interface{}) {
-	logger.Warning(args...)
+	logger.Warn(args...)
 }
 
 // Fatal ...

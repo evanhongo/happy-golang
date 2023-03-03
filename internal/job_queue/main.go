@@ -120,16 +120,16 @@ func NewJobQueue(service service.IJobService) (IJobQueue, error) {
 			machineryLog.SetDebug(debugLogger)
 		case "INFO":
 			infoLogger := NewLogger("info")
-			machineryLog.SetDebug(infoLogger)
+			machineryLog.SetInfo(infoLogger)
 		case "WARNING":
 			warningLogger := NewLogger("warning")
-			machineryLog.SetDebug(warningLogger)
+			machineryLog.SetWarning(warningLogger)
 		case "ERROR":
 			errorLogger := NewLogger("error")
-			machineryLog.SetDebug(errorLogger)
+			machineryLog.SetError(errorLogger)
 		case "FATAL":
 			fatalLogger := NewLogger("fatal")
-			machineryLog.SetDebug(fatalLogger)
+			machineryLog.SetFatal(fatalLogger)
 		}
 		if l == logLevel {
 			break

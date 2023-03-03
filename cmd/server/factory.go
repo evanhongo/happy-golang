@@ -6,7 +6,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	job_queue "github.com/evanhongo/happy-golang/internal/job-queue"
+	job_queue "github.com/evanhongo/happy-golang/internal/job_queue"
 	"github.com/evanhongo/happy-golang/pkg/logger"
 	"golang.org/x/sync/errgroup"
 )

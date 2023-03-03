@@ -11,6 +11,7 @@ var env *Env
 
 type Env struct {
 	ENVIRONMENT string `env:"ENVIRONMENT"`
+	LOG_LEVEL   string `env:"LOG_LEVEL"`
 	PORT        string `env:"PORT"`
 
 	GOOGLE_CLIENT_ID     string `env:"GOOGLE_CLIENT_ID"`

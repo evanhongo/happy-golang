@@ -10,7 +10,7 @@ import (
 	"github.com/evanhongo/happy-golang/api"
 	"github.com/evanhongo/happy-golang/api/handlers/auth"
 	"github.com/evanhongo/happy-golang/api/handlers/job"
-	"github.com/evanhongo/happy-golang/internal/job-queue"
+	"github.com/evanhongo/happy-golang/internal/job_queue"
 	service2 "github.com/evanhongo/happy-golang/service/auth"
 	"github.com/evanhongo/happy-golang/service/job"
 )

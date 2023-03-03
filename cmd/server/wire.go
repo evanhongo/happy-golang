@@ -5,7 +5,7 @@ package main
 
 import (
 	"github.com/evanhongo/happy-golang/api"
-	job_queue "github.com/evanhongo/happy-golang/internal/job-queue"
+	job_queue "github.com/evanhongo/happy-golang/internal/job_queue"
 	"github.com/google/wire"
 )
 
