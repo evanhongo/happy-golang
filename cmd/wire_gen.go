@@ -8,16 +8,16 @@ package main
 
 import (
 	"github.com/evanhongo/happy-golang/api"
-	"github.com/evanhongo/happy-golang/api/handlers/auth"
-	"github.com/evanhongo/happy-golang/api/handlers/job"
-	"github.com/evanhongo/happy-golang/internal/job_queue"
+	"github.com/evanhongo/happy-golang/api/route/auth"
+	"github.com/evanhongo/happy-golang/api/route/job"
+	"github.com/evanhongo/happy-golang/pkg/job_queue"
 	service2 "github.com/evanhongo/happy-golang/service/auth"
 	"github.com/evanhongo/happy-golang/service/job"
 )
 
 // Injectors from wire.go:
 
-func CreateServer() (*Server, error) {
+func CreateCmd() (*Cmd, error) {
 	iJobService := service.NewJobService()
 	iJobQueue, err := job_queue.NewJobQueue(iJobService)
 	if err != nil {
@@ -27,6 +27,6 @@ func CreateServer() (*Server, error) {
 	iAuthService := service2.NewAuthService()
 	authHandler := auth.NewAuthHandler(iAuthService)
 	server := api.NewHttpServer(jobHandler, authHandler)
-	mainServer := NewServer(server, iJobQueue)
-	return mainServer, nil
+	cmd := NewCmd(server, iJobQueue)
+	return cmd, nil
 }

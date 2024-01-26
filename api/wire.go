@@ -4,8 +4,8 @@
 package api
 
 import (
-	"github.com/evanhongo/happy-golang/api/handlers/auth"
-	"github.com/evanhongo/happy-golang/api/handlers/job"
+	"github.com/evanhongo/happy-golang/api/route/auth"
+	"github.com/evanhongo/happy-golang/api/route/job"
 	"github.com/google/wire"
 )
 

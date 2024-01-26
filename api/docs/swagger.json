@@ -39,7 +39,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Job"
+                    "job"
                 ],
                 "summary": "get state of job",
                 "parameters": [
@@ -90,12 +90,12 @@
                 },
                 "name": {
                     "type": "string",
-                    "example": "compressImage"
+                    "example": "compressImage,omitempty"
                 },
                 "result": {},
                 "state": {
                     "type": "string",
-                    "example": "SUCCESS"
+                    "example": "SUCCESS,omitempty"
                 }
             }
         }

@@ -5,8 +5,9 @@ import (
 	"net/http"
 
 	_ "github.com/evanhongo/happy-golang/api/docs"
-	"github.com/evanhongo/happy-golang/api/handlers/auth"
-	"github.com/evanhongo/happy-golang/api/handlers/job"
+	"github.com/evanhongo/happy-golang/api/route/auth"
+	health "github.com/evanhongo/happy-golang/api/route/health"
+	"github.com/evanhongo/happy-golang/api/route/job"
 	"github.com/evanhongo/happy-golang/internal/env"
 	pb "github.com/evanhongo/happy-golang/rpc/job"
 	"github.com/gin-gonic/gin"
@@ -18,6 +19,7 @@ import (
 // @version 1.0
 // @description Swagger API.
 // @contact.email evan@example.com
+
 func NewHttpServer(jobHandler *job.JobHandler, authHandler *auth.AuthHandler) *http.Server {
 	env := env.GetEnv()
 	if env.ENVIRONMENT == "production" {
@@ -28,14 +30,12 @@ func NewHttpServer(jobHandler *job.JobHandler, authHandler *auth.AuthHandler) *h
 
 	if env.ENVIRONMENT != "production" {
 		// swagger
+		// endpoint: /swagger/index.html
 		url := ginSwagger.URL("/swagger/doc.json")
 		engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 	}
 
-	engine.GET("/ping", Ping)
-	engine.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "OK")
-	})
+	health.AddRoute(engine)
 
 	engine.GET("/auth", authHandler.RetrieveAuthorizationCode)
 	engine.GET("/auth/callback", authHandler.RetrieveAccessToken)
@@ -50,14 +50,4 @@ func NewHttpServer(jobHandler *job.JobHandler, authHandler *auth.AuthHandler) *h
 		Addr:    ":" + env.PORT,
 		Handler: engine,
 	}
-}
-
-// @Summary ping
-// @Description ping for test service alive or not
-// @Produce json
-// @Success 200 {string} string
-// @Failure 400 {string} string
-// @Router /ping [get]
-func Ping(c *gin.Context) {
-	c.String(http.StatusOK, "pong")
 }

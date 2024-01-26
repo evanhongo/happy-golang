@@ -13,11 +13,11 @@ definitions:
         example: e6e07f18-cae7-4ea9-a4ba-2c8ac364ea5b
         type: string
       name:
-        example: compressImage
+        example: compressImage,omitempty
         type: string
       result: {}
       state:
-        example: SUCCESS
+        example: SUCCESS,omitempty
         type: string
     type: object
 info:
@@ -64,5 +64,5 @@ paths:
             $ref: '#/definitions/api.HttpErrorBody'
       summary: get state of job
       tags:
-      - Job
+      - job
 swagger: "2.0"

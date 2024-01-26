@@ -2,7 +2,7 @@ package repository
 
 import (
 	"github.com/evanhongo/happy-golang/entity"
-	"github.com/evanhongo/happy-golang/internal/cache"
+	"github.com/evanhongo/happy-golang/pkg/cache"
 	"github.com/jinzhu/gorm"
 )
 

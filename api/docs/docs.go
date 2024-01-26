@@ -48,7 +48,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Job"
+                    "job"
                 ],
                 "summary": "get state of job",
                 "parameters": [
@@ -99,12 +99,12 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string",
-                    "example": "compressImage"
+                    "example": "compressImage,omitempty"
                 },
                 "result": {},
                 "state": {
                     "type": "string",
-                    "example": "SUCCESS"
+                    "example": "SUCCESS,omitempty"
                 }
             }
         }

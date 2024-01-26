@@ -29,18 +29,18 @@ test:  ## Run test
 ##@ Build
 .PHONY: build
 build: ## Build binary
-	GOOS=linux GOARCH=amd64 go build -o app.exe ./cmd/server
+	GOOS=linux GOARCH=amd64 go build -o app.exe ./cmd
 
 
 ##@ Run
 .PHONY: run
 run:  ## Run main service
-	go run cmd/server/*.go
+	go run cmd/*.go
 
-##@ Client
-.PHONY: protobuf client
-client:  ## 
-	go run cmd/client/main.go
+##@ Example
+.PHONY: proto example
+example:  ## 
+	go run example/main.go
 
 ##@ Help
 .PHONY: help
