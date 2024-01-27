@@ -1,18 +1,11 @@
 package api
 
 import (
-	"fmt"
+	"context"
 	"net/http"
 
-	_ "github.com/evanhongo/happy-golang/api/docs"
-	"github.com/evanhongo/happy-golang/api/route/auth"
-	health "github.com/evanhongo/happy-golang/api/route/health"
-	"github.com/evanhongo/happy-golang/api/route/job"
 	"github.com/evanhongo/happy-golang/internal/env"
-	pb "github.com/evanhongo/happy-golang/rpc/job"
 	"github.com/gin-gonic/gin"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // @title Go Service Demo
@@ -20,34 +13,49 @@ import (
 // @description Swagger API.
 // @contact.email evan@example.com
 
-func NewHttpServer(jobHandler *job.JobHandler, authHandler *auth.AuthHandler) *http.Server {
+type IRouter interface {
+	Register(g *gin.Engine)
+}
+
+type Server struct {
+	port string
+	g    *gin.Engine
+	h    *http.Server
+}
+
+func (s *Server) Init() {
 	env := env.GetEnv()
 	if env.ENVIRONMENT == "production" {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	engine := gin.New()
+	s.g = gin.New()
 
-	if env.ENVIRONMENT != "production" {
-		// swagger
-		// endpoint: /swagger/index.html
-		url := ginSwagger.URL("/swagger/doc.json")
-		engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+}
+
+func (s *Server) RegisterRouter(r IRouter) {
+	r.Register(s.g)
+}
+
+func (s *Server) Start() error {
+	s.h = &http.Server{
+		Addr:    ":" + s.port,
+		Handler: s.g,
 	}
 
-	health.AddRoute(engine)
+	if err := s.h.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		return err
+	}
 
-	engine.GET("/auth", authHandler.RetrieveAuthorizationCode)
-	engine.GET("/auth/callback", authHandler.RetrieveAccessToken)
+	return nil
+}
 
-	twirpHandler := pb.NewJobServiceServer(jobHandler)
-	rpcPath := fmt.Sprintf("%s:method", twirpHandler.PathPrefix())
-	engine.POST(rpcPath, jobHandler.CheckRPCMethod, gin.WrapH(twirpHandler))
+func (s *Server) Shutdown(ctx context.Context) error {
+	return s.h.Shutdown(ctx)
+}
 
-	engine.GET("/job/:jobId", jobHandler.GetJobState)
-
-	return &http.Server{
-		Addr:    ":" + env.PORT,
-		Handler: engine,
+func NewServer(port string) *Server {
+	return &Server{
+		port: port,
 	}
 }

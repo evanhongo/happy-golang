@@ -1,6 +1,7 @@
 package health_route
 
 import (
+	"github.com/evanhongo/happy-golang/pkg/schema"
 	"github.com/softbrewery/gojoi/pkg/joi"
 )
 
@@ -15,7 +16,7 @@ func (s *PingRequestSchema) Parse(data any) error {
 	return nil
 }
 
-func NewPingRequestSchema() *PingRequestSchema {
+func NewPingRequestSchema() schema.ISchema {
 	return &PingRequestSchema{
 		schema: joi.Struct().Keys(joi.StructKeys{
 			"Hello": joi.String().Min(1),

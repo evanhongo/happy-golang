@@ -4,7 +4,7 @@
 //go:build !wireinject
 // +build !wireinject
 
-package main
+package job_route
 
 import (
 	"github.com/evanhongo/happy-golang/api"
@@ -14,14 +14,13 @@ import (
 
 // Injectors from wire.go:
 
-func CreateCmd() (*Cmd, error) {
-	string2 := api.DefaultPort()
-	server := api.NewServer(string2)
+func CreateRouter() (api.IRouter, error) {
 	iJobService := service.NewJobService()
 	iJobQueue, err := job_queue.NewJobQueue(iJobService)
 	if err != nil {
 		return nil, err
 	}
-	cmd := NewCmd(server, iJobQueue)
-	return cmd, nil
+	jobHandler := NewJobHandler(iJobQueue)
+	iRouter := NewJobRouter(jobHandler)
+	return iRouter, nil
 }

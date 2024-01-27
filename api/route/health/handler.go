@@ -51,3 +51,9 @@ func (handler *PingHandler) ValidateRequest(c *gin.Context) {
 func (handler *PingHandler) Ping(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
+
+func NewPingHandler(schema schema.ISchema) *PingHandler {
+	return &PingHandler{
+		schema,
+	}
+}

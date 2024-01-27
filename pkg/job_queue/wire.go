@@ -1,6 +1,3 @@
-//go:build wireinject
-// +build wireinject
-
 package job_queue
 
 import (
@@ -8,7 +5,7 @@ import (
 	"github.com/google/wire"
 )
 
-var JobQueueSet = wire.NewSet(
-	service.JobServiceSet,
+var CreateJobQueue = wire.NewSet(
+	service.NewJobService,
 	NewJobQueue,
 )
