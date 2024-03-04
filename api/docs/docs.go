@@ -24,6 +24,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "health"
+                ],
                 "summary": "ping",
                 "responses": {
                     "200": {
@@ -70,7 +73,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/api.HttpErrorBody"
+                            "$ref": "#/definitions/httputil.HttpErrorBody"
                         }
                     }
                 }
@@ -78,15 +81,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "api.HttpErrorBody": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string",
-                    "example": "status bad request"
-                }
-            }
-        },
         "entity.Job": {
             "type": "object",
             "properties": {
@@ -105,6 +99,19 @@ const docTemplate = `{
                 "state": {
                     "type": "string",
                     "example": "SUCCESS,omitempty"
+                }
+            }
+        },
+        "httputil.HttpErrorBody": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "NOT_FOUND"
+                },
+                "error": {
+                    "type": "string",
+                    "example": "status bad request"
                 }
             }
         }

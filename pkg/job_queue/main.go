@@ -2,11 +2,11 @@ package job_queue
 
 import (
 	"github.com/RichardKnop/machinery/v1"
-	"github.com/RichardKnop/machinery/v1/config"
+	redisCfg "github.com/RichardKnop/machinery/v1/config"
 	machineryLog "github.com/RichardKnop/machinery/v1/log"
 	"github.com/RichardKnop/machinery/v1/tasks"
+	"github.com/evanhongo/happy-golang/config"
 	"github.com/evanhongo/happy-golang/entity"
-	"github.com/evanhongo/happy-golang/internal/env"
 	"github.com/evanhongo/happy-golang/pkg/logger"
 	service "github.com/evanhongo/happy-golang/service/job"
 	"github.com/google/uuid"
@@ -17,8 +17,8 @@ type JobQueue struct {
 }
 
 func (queue *JobQueue) Start() error {
-	env := env.GetEnv()
-	worker := queue.server.NewWorker("my-worker", env.JOB_QUEUE_WORKER_NUM)
+	cfg := config.GetConfig()
+	worker := queue.server.NewWorker("my-worker", cfg.JOB_QUEUE_WORKER_NUM)
 	worker.SetErrorHandler(func(err error) {
 		logger.Error(err)
 	})
@@ -86,14 +86,14 @@ func newSignature(job *entity.JobRequest) (*tasks.Signature, error) {
 }
 
 func NewJobQueue(service service.IJobService) (IJobQueue, error) {
-	env := env.GetEnv()
-	redisConfig := &config.RedisConfig{}
-	machineryConfig := &config.Config{
-		Broker:          env.JOB_QUEUE_BROKER,
-		ResultBackend:   env.JOB_QUEUE_RESULT_BACKEND,
-		ResultsExpireIn: env.JOB_QUEUE_RESULT_EXPIRE_IN,
+	cfg := config.GetConfig()
+	redisConfig := &redisCfg.RedisConfig{}
+	machineryConfig := &redisCfg.Config{
+		Broker:          cfg.JOB_QUEUE_BROKER,
+		ResultBackend:   cfg.JOB_QUEUE_RESULT_BACKEND,
+		ResultsExpireIn: cfg.JOB_QUEUE_RESULT_EXPIRE_IN,
 		Redis:           redisConfig,
-		DefaultQueue:    env.JOB_QUEUE_DEFAULT_QUEUE,
+		DefaultQueue:    cfg.JOB_QUEUE_DEFAULT_QUEUE,
 	}
 
 	server, err := machinery.NewServer(machineryConfig)
@@ -105,7 +105,7 @@ func NewJobQueue(service service.IJobService) (IJobQueue, error) {
 		COMPRESS_IMAGE: service.CompressImage,
 	})
 
-	logLevel := env.JOB_QUEUE_LOG_LEVEL
+	logLevel := cfg.JOB_QUEUE_LOG_LEVEL
 	logLevels := []string{
 		"FATAL",
 		"ERROR",

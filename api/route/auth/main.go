@@ -6,15 +6,24 @@ import (
 )
 
 type Router struct {
-	rg      *gin.RouterGroup
 	handler *AuthHandler
 }
 
 func (r *Router) Register(g *gin.Engine) {
-	r.rg = g.Group("/auth")
+	rg := g.Group("/auth")
 	{
-		r.rg.GET("/", r.handler.RetrieveAuthorizationCode)
-		r.rg.GET("/callback", r.handler.RetrieveAccessToken)
+		rg2 := rg.Group("/email")
+		{
+			rg2.POST("/register", r.handler.RegisterByEmail)
+			rg2.POST("/login", r.handler.LoginByEmail)
+		}
+
+		rg3 := rg.Group("/google")
+		{
+			rg3.POST("/login", r.handler.RetrieveAuthorizationCode)
+			rg3.POST("/callback", r.handler.RetrieveAccessToken)
+		}
+
 	}
 }
 

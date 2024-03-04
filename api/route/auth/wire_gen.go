@@ -8,13 +8,18 @@ package auth_route
 
 import (
 	"github.com/evanhongo/happy-golang/api"
+	"github.com/evanhongo/happy-golang/pkg/db"
 	"github.com/evanhongo/happy-golang/service/auth"
 )
 
 // Injectors from wire.go:
 
 func CreateRouter() (api.IRouter, error) {
-	iAuthService := service.NewAuthService()
+	gormDB, err := db.NewDb()
+	if err != nil {
+		return nil, err
+	}
+	iAuthService := service.NewAuthService(gormDB)
 	authHandler := NewAuthHandler(iAuthService)
 	iRouter := NewAuthRouter(authHandler)
 	return iRouter, nil

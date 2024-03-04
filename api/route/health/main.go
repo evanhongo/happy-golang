@@ -6,21 +6,14 @@ import (
 )
 
 type Router struct {
-	rg      *gin.RouterGroup
 	handler *PingHandler
 }
 
 func (r *Router) Register(g *gin.Engine) {
-	r.rg = g.Group("/health")
+	rg := g.Group("/health")
 	{
-		// @Summary ping
-		// @Description ping for test service alive or not
-		// @Produce json
-		// @Success 200 {string} string
-		// @Failure 400 {string} string
-		// @Router /ping [get]
-		r.rg.GET("/ping", r.handler.Ping)
-		r.rg.POST("/ping", r.handler.ValidateRequest, r.handler.Ping)
+		rg.GET("/ping", r.handler.Ping)
+		rg.POST("/ping", r.handler.ValidateRequest, r.handler.Ping)
 	}
 }
 

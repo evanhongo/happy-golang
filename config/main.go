@@ -1,4 +1,4 @@
-package env
+package config
 
 import (
 	"sync"
@@ -7,12 +7,22 @@ import (
 )
 
 var once sync.Once
-var env *Env
+var cfg *Config
 
-type Env struct {
+type Config struct {
 	ENVIRONMENT string `env:"ENVIRONMENT"`
 	LOG_LEVEL   string `env:"LOG_LEVEL"`
 	PORT        string `env:"PORT"`
+
+	DB_HOST     string `env:"DB_HOST"`
+	DB_PORT     string `env:"DB_PORT"`
+	DB_NAME     string `env:"DB_NAME"`
+	DB_USERNAME string `env:"DB_USERNAME"`
+	DB_PASSWORD string `env:"DB_PASSWORD"`
+
+	REDIS_ENDPOINT string `env:"REDIS_ENDPOINT"`
+
+	JWT_SECRET string `env:"JWT_SECRET"`
 
 	GOOGLE_CLIENT_ID     string `env:"GOOGLE_CLIENT_ID"`
 	GOOGLE_CLIENT_SECRET string `env:"GOOGLE_CLIENT_SECRET"`
@@ -26,14 +36,14 @@ type Env struct {
 	JOB_QUEUE_LOG_LEVEL        string `env:"JOB_QUEUE_LOG_LEVEL"`
 }
 
-func GetEnv() *Env {
+func GetConfig() *Config {
 	once.Do(func() {
 		v := viper.New()
 		v.SetConfigFile(".env")
 		v.ReadInConfig()
 		v.AutomaticEnv()
-		v.Unmarshal(&env)
+		v.Unmarshal(&cfg)
 	})
 
-	return env
+	return cfg
 }

@@ -1,10 +1,4 @@
 definitions:
-  api.HttpErrorBody:
-    properties:
-      message:
-        example: status bad request
-        type: string
-    type: object
   entity.Job:
     properties:
       error:
@@ -18,6 +12,15 @@ definitions:
       result: {}
       state:
         example: SUCCESS,omitempty
+        type: string
+    type: object
+  httputil.HttpErrorBody:
+    properties:
+      code:
+        example: NOT_FOUND
+        type: string
+      error:
+        example: status bad request
         type: string
     type: object
 info:
@@ -42,6 +45,8 @@ paths:
           schema:
             type: string
       summary: ping
+      tags:
+      - health
   /state/{jobId}:
     get:
       description: get job id, name, state, result, error
@@ -61,7 +66,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/api.HttpErrorBody'
+            $ref: '#/definitions/httputil.HttpErrorBody'
       summary: get state of job
       tags:
       - job

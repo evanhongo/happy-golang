@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/evanhongo/happy-golang/internal/env"
+	"github.com/evanhongo/happy-golang/config"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,8 +24,8 @@ type Server struct {
 }
 
 func (s *Server) Init() {
-	env := env.GetEnv()
-	if env.ENVIRONMENT == "production" {
+	cfg := config.GetConfig()
+	if cfg.ENVIRONMENT == "production" {
 		gin.SetMode(gin.ReleaseMode)
 	}
 

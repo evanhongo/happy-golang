@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/evanhongo/happy-golang/internal/env"
+	"github.com/evanhongo/happy-golang/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -81,20 +81,20 @@ func New(writer io.Writer) *Logger {
 	if writer == nil {
 		panic("the writer is nil")
 	}
-	cfg := zap.NewProductionConfig()
-	cfg.EncoderConfig.EncodeTime = func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
+	logCfg := zap.NewProductionConfig()
+	logCfg.EncoderConfig.EncodeTime = func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 		enc.AppendString(t.Format("2006-01-02T15:04:05.000Z0700"))
 	}
-	env := env.GetEnv()
+	cfg := config.GetConfig()
 	levelMap := map[string]Level{
 		"debug": DebugLevel,
 		"info":  InfoLevel,
 		"warn":  WarnLevel,
 		"error": ErrorLevel,
 	}
-	level := levelMap[env.LOG_LEVEL]
+	level := levelMap[cfg.LOG_LEVEL]
 	core := zapcore.NewCore(
-		zapcore.NewJSONEncoder(cfg.EncoderConfig),
+		zapcore.NewJSONEncoder(logCfg.EncoderConfig),
 		zapcore.AddSync(writer),
 		zapcore.Level(level),
 	)

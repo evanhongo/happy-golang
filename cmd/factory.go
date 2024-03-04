@@ -11,7 +11,7 @@ import (
 	docs_route "github.com/evanhongo/happy-golang/api/route/docs"
 	health_route "github.com/evanhongo/happy-golang/api/route/health"
 	job_route "github.com/evanhongo/happy-golang/api/route/job"
-	"github.com/evanhongo/happy-golang/internal/env"
+	"github.com/evanhongo/happy-golang/config"
 	job_queue "github.com/evanhongo/happy-golang/pkg/job_queue"
 	"github.com/evanhongo/happy-golang/pkg/logger"
 	"golang.org/x/sync/errgroup"
@@ -34,11 +34,14 @@ func (c *Cmd) Execute() error {
 
 		docsRouter, _ := docs_route.CreateRouter()
 		healthRouter, _ := health_route.CreateRouter()
-		authRouter, _ := auth_route.CreateRouter()
+		authRouter, err := auth_route.CreateRouter()
+		if err != nil {
+			return err
+		}
 		jobRouter, _ := job_route.CreateRouter()
 
-		env := env.GetEnv()
-		if env.ENVIRONMENT != "production" {
+		cfg := config.GetConfig()
+		if cfg.ENVIRONMENT != "production" {
 			c.server.RegisterRouter(docsRouter)
 		}
 

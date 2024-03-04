@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	api "github.com/evanhongo/happy-golang/api/httputil"
+	"github.com/evanhongo/happy-golang/api/httputil"
 	job_queue "github.com/evanhongo/happy-golang/pkg/job_queue"
 	"github.com/evanhongo/happy-golang/pkg/logger"
 	pb "github.com/evanhongo/happy-golang/rpc/job"
@@ -21,13 +21,13 @@ type JobHandler struct {
 // @Produce json
 // @Param jobId path string true "job id"
 // @Success 200 {object} entity.Job
-// @Failure 400 {object} api.HttpErrorBody
+// @Failure 400 {object} httputil.HttpErrorBody
 // @Router /state/{jobId} [get]
 func (handler *JobHandler) GetJobState(c *gin.Context) {
 	jobId := c.Param("jobId")
 	job, err := handler.jobQueue.GetJobState(jobId)
 	if err != nil {
-		c.JSON(http.StatusNotFound, &api.HttpErrorBody{Code: string(api.NOT_FOUND), Error: err.Error()})
+		c.JSON(http.StatusNotFound, &httputil.HttpErrorBody{Error: err.Error()})
 	} else {
 		c.JSON(http.StatusOK, job)
 	}
@@ -47,7 +47,7 @@ func (handler *JobHandler) CheckRPCMethod(c *gin.Context) {
 		c.Next()
 	} else {
 		logger.Error("Unknown rpc method")
-		c.AbortWithStatusJSON(http.StatusBadRequest, &api.HttpErrorBody{Code: string(api.INVALID_REQUEST), Error: "Unknown rpc method"})
+		c.AbortWithStatusJSON(http.StatusBadRequest, &httputil.HttpErrorBody{Error: "Unknown rpc method"})
 	}
 }
 
